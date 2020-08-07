@@ -37,24 +37,9 @@ server.get('/users', (req, res) => {
 
 server.get('/users/:id', (req, res) => {
     // Attempt to retreive a user by id
-    //const users = db.getUsers();
-    const userId = req.params.id;
+        const userId = req.params.id;
     const user = db.getUserById(userId);
-
-    /*if (users && user) {
-        res.json(user);
-    } else if (users && !user) {
-        res.status(404);
-        res.json({
-            errorMessage: 'The user ID is invalid',
-        });
-    } else if (!users) {
-        res.status(500);
-        res.json({
-            errorMessage: 'User not found.',
-        });
-    }*/
-
+    
     if (user) {
         res.json(user);
     } else if (!user) {
