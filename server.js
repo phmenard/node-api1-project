@@ -54,9 +54,8 @@ server.post('/users', (req, res) => {
             name: req.body.name,
             bio: req.body.bio,
         });
-     
-
-        if (!db.includes(newUser)) {
+            
+        if (!db.users.find(o => o.name === newUser)) {
             res.status(201).json(newUser);
         } else {
             res.status(500).json({
@@ -96,18 +95,14 @@ server.delete('/users/:id', (req, res) => {
     const userId = req.params.id;
     const user = db.getUserById(userId);
 
-    if (!db.users.includes(user)) {
+    if (!user) {
         res
             .status(404)
             .json({ errorMessage: `The user with ID:${userId} does not exist.` });
     } else {
         db.deleteUser(user.id);
         res.status(204).json({ message: `User with ID:${userId} has been removed. ` });
-        if (db.users.includes(user)) {
-            res.status(500).json({ errorMessage: `User with ID:${userId} could not be removed.` });
-        } else {
-            res.status(204).json({ message: `User with ID:${userId} removed.` });
-        }
+       
     }
 });
 
