@@ -8,18 +8,19 @@ server.use(express.json());
 
 // generate a random token 
 const buildToken = () => {
-    return Math.random().toString(36).substring(2);
+    const token = Math.random().toString(36).substring(Math.floor(Math.random() * Math.floor(5)));
+    return token + Math.random().toString(25).substring(Math.floor(Math.random() * Math.floor(7)));
 }
 
 server.get('/', (req, res) => {
     //generate a token 
     const token = buildToken() + buildToken();
 
-    // send a hello msg  
+    // send Hello World! msg to the client  
     res.json(
         {
             message: 'Hello World!! From my new express server',
-            token: token  // send back a token because you should
+            token: token  // send back a token because we should
         });
 });
 
@@ -36,11 +37,11 @@ server.get('/users', (req, res) => {
 
 server.get('/users/:id', (req, res) => {
     // Attempt to retreive a user by id
-    const users = db.getUsers();
+    //const users = db.getUsers();
     const userId = req.params.id;
     const user = db.getUserById(userId);
 
-    if (users && user) {
+    /*if (users && user) {
         res.json(user);
     } else if (users && !user) {
         res.status(404);
@@ -51,6 +52,21 @@ server.get('/users/:id', (req, res) => {
         res.status(500);
         res.json({
             errorMessage: 'User not found.',
+        });
+    }*/
+
+    if (user) {
+        res.json(user);
+    } else if (!user) {
+            res.status(500);
+            res.json({
+                errorMessage: 'User not found.',
+            });
+        
+    } else {
+        res.status(404);
+        res.json({
+            errorMessage: 'The user ID is invalid',
         });
     }
 });
