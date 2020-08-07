@@ -54,7 +54,9 @@ server.post('/users', (req, res) => {
             name: req.body.name,
             bio: req.body.bio,
         });
-        if (db.users.includes(newUser)) {
+     
+
+        if (!db.includes(newUser)) {
             res.status(201).json(newUser);
         } else {
             res.status(500).json({
@@ -70,7 +72,8 @@ server.put('/users/:id', (req, res) => {
     const userId = req.params.id;
     const user = db.getUserById(userId);
 
-    if (!db.users.includes(user)) {
+    //if (!db.users.includes(user)) {
+    if (!user) {
         res
             .status(404)
             .json({ errorMessage: `User with ID:${userId} does not exist.` });
@@ -78,7 +81,7 @@ server.put('/users/:id', (req, res) => {
         res
             .status(400)
             .json({ errorMessage: 'Name and bio are requiered fields.' });
-    } else if (db.users.includes(user) && req.body.name && req.body.bio) {
+    } else if (user && req.body.name && req.body.bio) {
         db.updateUser(user.id, {
             name: req.body.name || user.name,
             bio: req.body.bio || user.bio,
@@ -110,5 +113,5 @@ server.delete('/users/:id', (req, res) => {
 
 
 server.listen(3000, () => {
-    console.log('server started at port 3000');
+    console.log('server listening on port 3000');
 });
