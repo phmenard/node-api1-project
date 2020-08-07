@@ -25,7 +25,7 @@ function createUser(data) {
 function updateUser(id, data) {
 	const index = users.findIndex(u => u.id === id)
 	users[index] = {
-		...users[index],
+		...users[index], 
 		...data,
 	}
 	

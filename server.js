@@ -17,8 +17,9 @@ server.get('/', (req, res) => {
 
     // send a hello msg  
     res.json(
-        { message: 'Hello World!! From my new express server',
-          token: token  // send back a token because you should
+        {
+            message: 'Hello World!! From my new express server',
+            token: token  // send back a token because you should
         });
 });
 
@@ -65,7 +66,8 @@ server.post('/users', (req, res) => {
             name: req.body.name,
             bio: req.body.bio,
         });
-            
+
+        // make sure the user is not already in the db
         if (!db.users.find(o => o.user === newUser)) {
             res.status(201).json(newUser);
         } else {
@@ -113,7 +115,7 @@ server.delete('/users/:id', (req, res) => {
     } else {
         db.deleteUser(user.id);
         res.status(204).json({ message: `User with ID:${userId} has been removed. ` });
-       
+
     }
 });
 
