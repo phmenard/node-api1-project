@@ -6,9 +6,20 @@ const server = express();
 
 server.use(express.json());
 
+// generate a random token 
+const buildToken = () => {
+    return Math.random().toString(36).substring(2);
+}
+
 server.get('/', (req, res) => {
+    //generate a token 
+    const token = buildToken() + buildToken();
+
     // send a hello msg  
-    res.json({ message: 'Hello World!! From my new express server' });
+    res.json(
+        { message: 'Hello World!! From my new express server',
+          token: token  // send back a token because you should
+        });
 });
 
 server.get('/users', (req, res) => {
@@ -55,7 +66,7 @@ server.post('/users', (req, res) => {
             bio: req.body.bio,
         });
             
-        if (!db.users.find(o => o.name === newUser)) {
+        if (!db.users.find(o => o.user === newUser)) {
             res.status(201).json(newUser);
         } else {
             res.status(500).json({
